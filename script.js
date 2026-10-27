@@ -30,7 +30,7 @@ function makeSets(cards){
 function showCard(){
  const deck=sets[currentSet];if(!deck)return;
  const finished=currentIndex>=deck.length;
- modeLabel.textContent="Kokoro Japanese test · 3 cards";
+ modeLabel.textContent="Japanese speech test · 3 cards";
  setPicker.querySelectorAll("button").forEach((b,i)=>{b.classList.toggle("active",i===currentSet);b.setAttribute("aria-pressed",String(i===currentSet))});
  progressText.textContent=`${Math.min(currentIndex+1,deck.length)}/${deck.length}`;
  progressBar.style.width=`${(Math.min(currentIndex+1,deck.length)/deck.length)*100}%`;
@@ -60,31 +60,20 @@ if("serviceWorker"in navigator){
  });
 }loadDeck();
 
-// Japanese Kokoro TTS, never browser/device speechSynthesis.
+// Lightweight Japanese speech via the device's built-in TTS.
 const pronounceButton=document.getElementById("pronounceButton");
 const ttsStatus=document.getElementById("ttsStatus");
-let kokoroJP=null,kokoroLoading=null,playingAudio=null,playingUrl=null;
-async function getKokoro(){
- if(kokoroJP)return kokoroJP;
- if(!kokoroLoading)kokoroLoading=(async()=>{
-  const {KokoroJP}=await import("https://cdn.jsdelivr.net/npm/kokoro-js-jp@0.2.0/dist/kokoro-jp.web.js");
-  return await KokoroJP.load();
- })().catch(e=>{kokoroLoading=null;throw e});
- kokoroJP=await kokoroLoading;return kokoroJP;
-}
-pronounceButton.addEventListener("click",async()=>{
+function japaneseVoice(){const voices=speechSynthesis.getVoices();return voices.find(v=>v.lang.toLowerCase()==="ja-jp")||voices.find(v=>v.lang.toLowerCase().startsWith("ja"));}
+pronounceButton.addEventListener("click",()=>{
  const card=sets[currentSet]?.[currentIndex];if(!card)return;
- pronounceButton.disabled=true;ttsStatus.textContent="Loading Japanese Kokoro model / generating speech… first use may take several minutes.";
- try{
-  const tts=await getKokoro();
-  // Speak the dictionary form only; do not read the English prompt.
-  const audio=await tts.speak(word(card),"jf_alpha");
-  if(playingAudio){playingAudio.pause();playingAudio=null}
-  if(playingUrl){URL.revokeObjectURL(playingUrl);playingUrl=null}
-  playingUrl=URL.createObjectURL(audio.toBlob());
-  playingAudio=new Audio(playingUrl);
-  await playingAudio.play();
-  ttsStatus.textContent="Playing Japanese Kokoro voice (jf_alpha).";
- }catch(e){ttsStatus.textContent="Kokoro error: "+(e?.message||String(e));}
- finally{pronounceButton.disabled=false}
+ if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis is not supported by this browser.";return;}
+ speechSynthesis.cancel();
+ const utterance=new SpeechSynthesisUtterance(word(card));
+ utterance.lang="ja-JP";utterance.rate=0.85;
+ const voice=japaneseVoice();if(voice)utterance.voice=voice;
+ utterance.onstart=()=>{ttsStatus.textContent="Speaking Japanese"+(voice?" ("+voice.name+")":"")+"…";};
+ utterance.onend=()=>{ttsStatus.textContent="Finished.";};
+ utterance.onerror=e=>{ttsStatus.textContent="Speech error: "+e.error+". Check that a Japanese voice is installed on your iPhone.";};
+ ttsStatus.textContent="Starting Japanese pronunciation…";
+ speechSynthesis.speak(utterance);
 });
