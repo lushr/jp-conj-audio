@@ -88,12 +88,9 @@ pronounceButton.addEventListener("click",()=>{
  const card=sets[currentSet]?.[currentIndex];if(!card)return;
  if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis unavailable.";return;}
  stopSpeech();const token=sequence;
- const lines=card.japanese.split("\n").filter(Boolean);let i=0;
- function next(){if(token!==sequence)return;if(i>=lines.length){ttsStatus.textContent="Finished.";return;}
-  const line=lines[i++];ttsStatus.textContent="Playing "+i+" of "+lines.length;
-  speakLine(line,token,()=>{pauseTimer=setTimeout(()=>{pauseTimer=null;next();},850);});
- }
- next();
+ const phrase=card.japanese.split("\\n").filter(Boolean).join("。 ")+"。";
+ ttsStatus.textContent="";
+ speakLine(phrase,token,()=>{ttsStatus.textContent="";});
 });
 function setRate(delta){rate=Math.max(0.5,Math.min(1.3,Math.round((rate+delta)*100)/100));speechSpeed.textContent=rate.toFixed(2)+"×";stopSpeech();ttsStatus.textContent="";}
 document.getElementById("slowerButton").addEventListener("click",()=>setRate(-0.1));
