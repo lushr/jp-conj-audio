@@ -67,22 +67,7 @@ const ttsStatus=document.getElementById("ttsStatus");
 const speechSpeed=document.getElementById("speechSpeed");
 const rates=[0.75,0.85,1.0];let rateIndex=1,rate=rates[rateIndex],sequence=0,pauseTimer=null;
 function stopSpeech(){sequence++;if(pauseTimer!==null){clearTimeout(pauseTimer);pauseTimer=null;}if("speechSynthesis" in window)speechSynthesis.cancel();}
-const voiceSelect=document.getElementById("voiceSelect");
-let japaneseVoices=[],selectedVoiceURI="";
-function refreshVoices(){
- if(!("speechSynthesis" in window)){voiceSelect.replaceChildren(new Option("Speech unavailable",""));voiceSelect.disabled=true;return;}
- japaneseVoices=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith("ja"));
- voiceSelect.replaceChildren();
- if(!japaneseVoices.length){voiceSelect.add(new Option("No Japanese voices available",""));voiceSelect.disabled=true;return;}
- voiceSelect.disabled=false;
- japaneseVoices.forEach((v,i)=>voiceSelect.add(new Option(v.name+" ("+v.lang+")",String(i))));
- const chosen=japaneseVoices.findIndex(v=>v.voiceURI===selectedVoiceURI);
- voiceSelect.value=String(chosen>=0?chosen:0);
- selectedVoiceURI=japaneseVoices[Number(voiceSelect.value)].voiceURI;
-}
-voiceSelect.addEventListener("change",()=>{selectedVoiceURI=japaneseVoices[Number(voiceSelect.value)]?.voiceURI||"";stopSpeech();ttsStatus.textContent="";});
-if("speechSynthesis" in window){speechSynthesis.addEventListener("voiceschanged",refreshVoices);refreshVoices();window.addEventListener("pageshow",refreshVoices);}
-function japaneseVoice(){return japaneseVoices.find(v=>v.voiceURI===selectedVoiceURI)||japaneseVoices[0];}
+function japaneseVoice(){return speechSynthesis.getVoices().find(v=>v.lang.startsWith("ja"));}
 function speakLine(line,token,onDone){
  if(token!==sequence)return;
  const utterance=new SpeechSynthesisUtterance(line);utterance.lang="ja-JP";utterance.rate=rate;
