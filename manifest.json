@@ -1,0 +1,16 @@
+{
+  "name": "Japanese Conjugation Practice",
+  "short_name": "Conjugation",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#f8c8dc",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
