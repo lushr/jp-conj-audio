@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8c8dc"><title>Japanese Conjugation Practice</title>
+<link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css">
+<style>
+.help-sheet h4{margin:18px 0 6px;font-size:1.05rem}
+.help-sheet .example{margin:8px 0 14px 14px;padding:9px 12px;background:rgba(205,239,255,.62);border-radius:12px}
+.help-sheet table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:.98rem}
+.help-sheet th,.help-sheet td{padding:7px 6px;text-align:left;vertical-align:top;border:0}
+.help-sheet th{font-weight:900}
+.help-sheet tr:nth-child(even){background:rgba(205,239,255,.42)}
+.help-sheet td:first-child,.help-sheet th:first-child{font-weight:800;width:55%}
+.table-wrap{width:100%;overflow-x:auto}
+
+#uverb .ua-table td:first-child,#uverb .ua-table th:first-child{width:30%}
+#uverb .ua-table td:nth-child(2),#uverb .ua-table th:nth-child(2){width:70%}
+#uverb .sound-table td:first-child,#uverb .sound-table th:first-child{width:55%}
+#uverb .sound-table td:nth-child(2),#uverb .sound-table th:nth-child(2){width:45%}
+</style>
+</head><body>
+<main class="app-shell">
+<section class="top-card">
+<div class="app-title-row">
+<button id="helpButton" class="icon-button" type="button" aria-label="Help">?</button>
+<div class="set-picker" id="setPicker" aria-label="Choose practice set"></div></div>
+<div class="progress-wrap"><div class="progress-label"><span id="modeLabel">Set 1 of 7</span><span id="progressText">0/0</span></div>
+<div class="progress-track"><div id="progressBar" class="progress-bar"></div></div></div>
+</section>
+<section class="prompt-card"><h2 id="englishPrompt">Loading...</h2>
+<p class="conjugation-hint">ない → た → なかった → て → たり</p></section>
+<section id="answerCard" class="answer-card hidden"><p id="japaneseAnswer" class="japanese-text"></p>
+<button id="nextButton" class="primary-button pink" type="button">Next</button></section>
+<button id="revealButton" class="primary-button yellow" type="button">Reveal</button>
+</main>
+<div id="helpPanel" class="help-overlay hidden" role="dialog" aria-modal="true"><div class="help-sheet">
+<div class="help-head"><h2>Conjugation help</h2><button id="closeHelp" class="close-button">×</button></div>
+<nav class="help-jumps"><a href="#nai">ない</a><a href="#ta">た</a><a href="#nakatta">なかった</a><a href="#te">て</a><a href="#tari">たり</a><a href="#uverb">う-verbs</a><a href="#ruverb">る-verbs</a><a href="#iadj">い-adj</a><a href="#naadj">な-adj</a><a href="#irregular">Irregular</a></nav>
+<section id="nai">
+<h3>ない — negative</h3>
+<h4>う-verbs</h4>
+<p>Change the final <b>う sound to its あ sound + ない</b>.</p>
+<div class="table-wrap"><table>
+<tr><th>Ending</th><th>Example</th></tr>
+<tr><td>う → わない</td><td>かう → かわない</td></tr>
+<tr><td>く → かない</td><td>かく → かかない</td></tr>
+<tr><td>ぐ → がない</td><td>およぐ → およがない</td></tr>
+<tr><td>す → さない</td><td>はなす → はなさない</td></tr>
+<tr><td>つ → たない</td><td>まつ → またない</td></tr>
+<tr><td>む → まない</td><td>のむ → のまない</td></tr>
+<tr><td>ぶ → ばない</td><td>あそぶ → あそばない</td></tr>
+<tr><td>ぬ → なない</td><td>しぬ → しなない</td></tr>
+<tr><td>る → らない</td><td>とる → とらない</td></tr>
+</table></div>
+<h4>る-verbs</h4><p>Drop <b>る</b> + <b>ない</b></p><p class="example">たべる → たべない</p>
+<h4>い-adjectives</h4><p>Change <b>い → くない</b></p><p class="example">たかい → たかくない</p>
+<h4>な-adjectives</h4><p>Add <b>じゃない</b></p><p class="example">しずか → しずかじゃない</p>
+</section>
+
+<section id="ta">
+<h3>た — short past</h3>
+<h4>う-verbs</h4>
+<div class="table-wrap"><table>
+<tr><th>Ending</th><th>Example</th></tr>
+<tr><td>う・つ・る → った</td><td>かう → かった</td></tr>
+<tr><td>む・ぶ・ぬ → んだ</td><td>のむ → のんだ</td></tr>
+<tr><td>く → いた</td><td>かく → かいた</td></tr>
+<tr><td>ぐ → いだ</td><td>およぐ → およいだ</td></tr>
+<tr><td>す → した</td><td>はなす → はなした</td></tr>
+</table></div>
+<p><b>Exception:</b> いく → いった</p>
+<h4>る-verbs</h4><p>Drop <b>る</b> + <b>た</b></p><p class="example">たべる → たべた</p>
+<h4>い-adjectives</h4><p>Change <b>い → かった</b></p><p class="example">たかい → たかかった</p>
+<h4>な-adjectives</h4><p>Add <b>だった</b></p><p class="example">しずか → しずかだった</p>
+</section>
+
+<section id="nakatta">
+<h3>なかった — negative past</h3>
+<h4>Verbs</h4><p>Make the <b>ない</b> form, then change <b>ない → なかった</b>.</p>
+<p class="example">かく → かかない → かかなかった<br>たべる → たべない → たべなかった</p>
+<h4>い-adjectives</h4><p>Change <b>い → くなかった</b></p><p class="example">たかい → たかくなかった</p>
+<h4>な-adjectives</h4><p>Add <b>じゃなかった</b></p><p class="example">しずか → しずかじゃなかった</p>
+</section>
+
+<section id="te">
+<h3>て — て-form</h3>
+<h4>う-verbs</h4>
+<div class="table-wrap"><table>
+<tr><th>Ending</th><th>Example</th></tr>
+<tr><td>う・つ・る → って</td><td>かう → かって</td></tr>
+<tr><td>む・ぶ・ぬ → んで</td><td>のむ → のんで</td></tr>
+<tr><td>く → いて</td><td>かく → かいて</td></tr>
+<tr><td>ぐ → いで</td><td>およぐ → およいで</td></tr>
+<tr><td>す → して</td><td>はなす → はなして</td></tr>
+</table></div>
+<p><b>Exception:</b> いく → いって</p>
+<h4>る-verbs</h4><p>Drop <b>る</b> + <b>て</b></p><p class="example">たべる → たべて</p>
+<h4>い-adjectives</h4><p>Change <b>い → くて</b></p><p class="example">たかい → たかくて</p>
+<h4>な-adjectives</h4><p>Add <b>で</b></p><p class="example">しずか → しずかで</p>
+</section>
+
+<section id="tari">
+<h3>たり — listing things</h3>
+<p>Start with the <b>た form</b>, then add <b>り</b>.</p>
+<h4>Verbs</h4><p class="example">かく → かいた → かいたり<br>のむ → のんだ → のんだり<br>たべる → たべた → たべたり</p>
+<h4>い-adjectives</h4><p>Change <b>い → かったり</b></p><p class="example">たかい → たかかったり</p>
+<h4>な-adjectives</h4><p>Add <b>だったり</b></p><p class="example">しずか → しずかだったり</p>
+</section>
+
+<section id="uverb">
+<h3>う-verbs</h3>
+
+<h4>ない — negative</h4>
+<p>Change the final <b>う sound to its あ sound + ない</b>.</p>
+<p class="example">かく → かかない</p>
+<div class="table-wrap"><table class="ua-table">
+<tr><th>Change</th><th>Example</th></tr>
+<tr><td>～う → わ</td><td>かう → かわない</td></tr>
+<tr><td>～く → か</td><td>かく → かかない</td></tr>
+<tr><td>～ぐ → が</td><td>およぐ → およがない</td></tr>
+<tr><td>～す → さ</td><td>はなす → はなさない</td></tr>
+<tr><td>～つ → た</td><td>まつ → またない</td></tr>
+<tr><td>～む → ま</td><td>のむ → のまない</td></tr>
+<tr><td>～る → ら</td><td>とる → とらない</td></tr>
+</table></div>
+
+<h4>た — short past</h4>
+<p>The change depends on the verb's final ending.</p>
+<p class="example">のむ → のんだ</p>
+<div class="table-wrap"><table class="sound-table">
+<tr><th>Ending</th><th>Example</th></tr>
+<tr><td>う・つ・る → った</td><td>かう → かった</td></tr>
+<tr><td>む・ぶ・ぬ → んだ</td><td>のむ → のんだ</td></tr>
+<tr><td>く → いた</td><td>かく → かいた</td></tr>
+<tr><td>ぐ → いだ</td><td>およぐ → およいだ</td></tr>
+<tr><td>す → した</td><td>はなす → はなした</td></tr>
+</table></div>
+<p><b>Exception:</b> いく → いった</p>
+
+<h4>なかった — negative past</h4>
+<p>Make the <b>ない</b> form, then change <b>ない → なかった</b>. The same <b>う → あ</b> sound change applies.</p>
+<p class="example">かく → かかない → かかなかった</p>
+<div class="table-wrap"><table class="ua-table">
+<tr><th>Change</th><th>Example</th></tr>
+<tr><td>～う → わ</td><td>かう → かわなかった</td></tr>
+<tr><td>～く → か</td><td>かく → かかなかった</td></tr>
+<tr><td>～ぐ → が</td><td>およぐ → およがなかった</td></tr>
+<tr><td>～す → さ</td><td>はなす → はなさなかった</td></tr>
+<tr><td>～つ → た</td><td>まつ → またなかった</td></tr>
+<tr><td>～む → ま</td><td>のむ → のまなかった</td></tr>
+<tr><td>～る → ら</td><td>とる → とらなかった</td></tr>
+</table></div>
+
+<h4>て — て-form</h4>
+<p>The change depends on the verb's final ending.</p>
+<p class="example">およぐ → およいで</p>
+<div class="table-wrap"><table class="sound-table">
+<tr><th>Ending</th><th>Example</th></tr>
+<tr><td>う・つ・る → って</td><td>かう → かって</td></tr>
+<tr><td>む・ぶ・ぬ → んで</td><td>のむ → のんで</td></tr>
+<tr><td>く → いて</td><td>かく → かいて</td></tr>
+<tr><td>ぐ → いで</td><td>およぐ → およいで</td></tr>
+<tr><td>す → して</td><td>はなす → はなして</td></tr>
+</table></div>
+<p><b>Exception:</b> いく → いって</p>
+
+<h4>たり — listing actions</h4>
+<p>Make the <b>た form + り</b>. It uses the same ending groups as た.</p>
+<p class="example">のむ → のんだ → のんだり</p>
+<div class="table-wrap"><table class="sound-table">
+<tr><th>Ending</th><th>Example</th></tr>
+<tr><td>う・つ・る → ったり</td><td>かう → かったり</td></tr>
+<tr><td>む・ぶ・ぬ → んだり</td><td>のむ → のんだり</td></tr>
+<tr><td>く → いたり</td><td>かく → かいたり</td></tr>
+<tr><td>ぐ → いだり</td><td>およぐ → およいだり</td></tr>
+<tr><td>す → したり</td><td>はなす → はなしたり</td></tr>
+</table></div>
+<p><b>Exception:</b> いく → いったり</p>
+</section>
+
+<section id="ruverb">
+<h3>る-verbs</h3>
+<p>Drop <b>る</b>, then add the new ending.</p>
+<p>Using <b>たべる</b>:</p>
+<div class="table-wrap"><table>
+<tr><th>Form</th><th>たべる</th></tr>
+<tr><td>ない</td><td>たべない</td></tr><tr><td>た</td><td>たべた</td></tr>
+<tr><td>なかった</td><td>たべなかった</td></tr><tr><td>て</td><td>たべて</td></tr><tr><td>たり</td><td>たべたり</td></tr>
+</table></div>
+<p><b>Watch out:</b> not every verb ending in る is a る-verb.</p>
+<p class="example">かえる → かえらない<br>はいる → はいらない</p>
+<p>These are <b>う-verbs</b>.</p>
+</section>
+
+<section id="iadj">
+<h3>い-adjectives</h3><p>Using <b>たかい</b>:</p>
+<div class="table-wrap"><table>
+<tr><th>Form</th><th>たかい</th></tr>
+<tr><td>ない</td><td>たかくない</td></tr><tr><td>た</td><td>たかかった</td></tr>
+<tr><td>なかった</td><td>たかくなかった</td></tr><tr><td>て</td><td>たかくて</td></tr><tr><td>たり</td><td>たかかったり</td></tr>
+</table></div>
+<h4>いい is irregular</h4>
+<div class="table-wrap"><table>
+<tr><th>Form</th><th>いい</th></tr>
+<tr><td>ない</td><td>よくない</td></tr><tr><td>た</td><td>よかった</td></tr>
+<tr><td>なかった</td><td>よくなかった</td></tr><tr><td>て</td><td>よくて</td></tr><tr><td>たり</td><td>よかったり</td></tr>
+</table></div>
+</section>
+
+<section id="naadj">
+<h3>な-adjectives</h3><p>Using <b>しずか</b>:</p>
+<div class="table-wrap"><table>
+<tr><th>Form</th><th>しずか</th></tr>
+<tr><td>ない</td><td>しずかじゃない</td></tr><tr><td>た</td><td>しずかだった</td></tr>
+<tr><td>なかった</td><td>しずかじゃなかった</td></tr><tr><td>て</td><td>しずかで</td></tr><tr><td>たり</td><td>しずかだったり</td></tr>
+</table></div>
+</section>
+
+<section id="irregular">
+<h3>Irregular verbs</h3>
+<h4>する — to do</h4>
+<div class="table-wrap"><table><tr><td>ない</td><td>しない</td></tr><tr><td>た</td><td>した</td></tr><tr><td>なかった</td><td>しなかった</td></tr><tr><td>て</td><td>して</td></tr><tr><td>たり</td><td>したり</td></tr></table></div>
+<h4>くる — to come</h4>
+<div class="table-wrap"><table><tr><td>ない</td><td>こない</td></tr><tr><td>た</td><td>きた</td></tr><tr><td>なかった</td><td>こなかった</td></tr><tr><td>て</td><td>きて</td></tr><tr><td>たり</td><td>きたり</td></tr></table></div>
+<h4>いく — to go</h4><p>Most forms are regular. <b>た and て are the exceptions.</b></p>
+<div class="table-wrap"><table><tr><td>ない</td><td>いかない</td></tr><tr><td>た</td><td><b>いった</b></td></tr><tr><td>なかった</td><td>いかなかった</td></tr><tr><td>て</td><td><b>いって</b></td></tr><tr><td>たり</td><td><b>いったり</b></td></tr></table></div>
+<h4>ある — to exist</h4><p>The negative is irregular.</p>
+<div class="table-wrap"><table><tr><td>ない</td><td><b>ない</b></td></tr><tr><td>た</td><td>あった</td></tr><tr><td>なかった</td><td><b>なかった</b></td></tr><tr><td>て</td><td>あって</td></tr><tr><td>たり</td><td>あったり</td></tr></table></div>
+</section>
+</div></div><script src="script.js"></script></body></html>
