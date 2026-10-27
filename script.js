@@ -28,6 +28,7 @@ function makeSets(cards){
  });
 }
 function showCard(){
+ stopSpeech();
  const deck=sets[currentSet];if(!deck)return;
  const finished=currentIndex>=deck.length;
  modeLabel.textContent="Japanese speech test · 3 cards";
@@ -42,7 +43,7 @@ function showCard(){
    if(currentSet<sets.length-1){answerCard.classList.remove("hidden");nextButton.textContent="Next set →"}
    return;
  }
- const c=deck[currentIndex];promptEl.textContent=c.english;answerEl.textContent=c.japanese;
+ const c=deck[currentIndex];promptEl.textContent=c.english;renderAnswer(c);
  revealButton.classList.remove("hidden");nextButton.textContent=currentIndex===deck.length-1?"Finish set":"Next";
 }
 function chooseSet(n){if(n<0||n>=sets.length)return;currentSet=n;currentIndex=0;showCard();window.scrollTo({top:0,behavior:"smooth"})}
@@ -60,20 +61,42 @@ if("serviceWorker"in navigator){
  });
 }loadDeck();
 
-// Lightweight Japanese speech via the device's built-in TTS.
+// Native Japanese TTS: individual line playback or a paced sequence.
 const pronounceButton=document.getElementById("pronounceButton");
 const ttsStatus=document.getElementById("ttsStatus");
+const speechSpeed=document.getElementById("speechSpeed");
+let rate=0.85,sequence=0,pauseTimer=null;
+function stopSpeech(){sequence++;if(pauseTimer!==null){clearTimeout(pauseTimer);pauseTimer=null;}if("speechSynthesis" in window)speechSynthesis.cancel();}
 function japaneseVoice(){const voices=speechSynthesis.getVoices();return voices.find(v=>v.lang.toLowerCase()==="ja-jp")||voices.find(v=>v.lang.toLowerCase().startsWith("ja"));}
+function speakLine(line,token,onDone){
+ if(token!==sequence)return;
+ const utterance=new SpeechSynthesisUtterance(line);utterance.lang="ja-JP";utterance.rate=rate;
+ const voice=japaneseVoice();if(voice)utterance.voice=voice;
+ utterance.onend=()=>{if(token===sequence)onDone();};
+ utterance.onerror=e=>{if(token===sequence){ttsStatus.textContent="Speech error: "+e.error;}};
+ speechSynthesis.speak(utterance);
+}
+function renderAnswer(card){
+ answerEl.replaceChildren();
+ for(const line of card.japanese.split("\\n").filter(Boolean)){
+  const row=document.createElement("div");row.className="speech-line";
+  const label=document.createElement("span");label.textContent=line;
+  const play=document.createElement("button");play.type="button";play.className="line-play";play.textContent="▶";play.setAttribute("aria-label","Pronounce "+line);
+  play.addEventListener("click",()=>{stopSpeech();const token=sequence;ttsStatus.textContent="Playing "+line;speakLine(line,token,()=>{ttsStatus.textContent="";});});
+  row.append(label,play);answerEl.append(row);
+ }
+}
 pronounceButton.addEventListener("click",()=>{
  const card=sets[currentSet]?.[currentIndex];if(!card)return;
- if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis is not supported by this browser.";return;}
- speechSynthesis.cancel();
- const utterance=new SpeechSynthesisUtterance(word(card));
- utterance.lang="ja-JP";utterance.rate=0.85;
- const voice=japaneseVoice();if(voice)utterance.voice=voice;
- utterance.onstart=()=>{ttsStatus.textContent="Speaking Japanese"+(voice?" ("+voice.name+")":"")+"…";};
- utterance.onend=()=>{ttsStatus.textContent="Finished.";};
- utterance.onerror=e=>{ttsStatus.textContent="Speech error: "+e.error+". Check that a Japanese voice is installed on your iPhone.";};
- ttsStatus.textContent="Starting Japanese pronunciation…";
- speechSynthesis.speak(utterance);
+ if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis unavailable.";return;}
+ stopSpeech();const token=sequence;
+ const lines=card.japanese.split("\\n").filter(Boolean);let i=0;
+ function next(){if(token!==sequence)return;if(i>=lines.length){ttsStatus.textContent="Finished.";return;}
+  const line=lines[i++];ttsStatus.textContent="Playing "+i+" of "+lines.length;
+  speakLine(line,token,()=>{pauseTimer=setTimeout(()=>{pauseTimer=null;next();},850);});
+ }
+ next();
 });
+function setRate(delta){rate=Math.max(0.5,Math.min(1.3,Math.round((rate+delta)*100)/100));speechSpeed.textContent=rate.toFixed(2)+"×";stopSpeech();ttsStatus.textContent="";}
+document.getElementById("slowerButton").addEventListener("click",()=>setRate(-0.1));
+document.getElementById("fasterButton").addEventListener("click",()=>setRate(0.1));
