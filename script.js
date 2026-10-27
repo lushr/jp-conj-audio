@@ -84,9 +84,17 @@ pronounceButton.addEventListener("click",()=>{
  const card=sets[currentSet]?.[currentIndex];if(!card)return;
  if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis unavailable.";return;}
  stopSpeech();const token=sequence;
- const lines=card.japanese.split("\\n").filter(Boolean);\n let position=0;\n const playNext=()=>{if(token!==sequence)return;if(position>=lines.length){ttsStatus.textContent="";return;}speakLine(lines[position++]+"。",token,()=>{pauseTimer=setTimeout(()=>{pauseTimer=null;playNext();},650);});};\n ttsStatus.textContent="";playNext();\n return;
+ const lines=card.japanese.split("\\n").filter(Boolean);
+ let position=0;
  ttsStatus.textContent="";
- speakLine(phrase,token,()=>{ttsStatus.textContent="";});
+ const playNext=()=>{
+   if(token!==sequence)return;
+   if(position>=lines.length){ttsStatus.textContent="";return;}
+   speakLine(lines[position++]+"。",token,()=>{
+     pauseTimer=setTimeout(()=>{pauseTimer=null;playNext();},650);
+   });
+ };
+ playNext();
 });
 function setRate(delta){rateIndex=Math.max(0,Math.min(rates.length-1,rateIndex+delta));rate=rates[rateIndex];try{localStorage.setItem("jp-conj-audio-speed",String(rate));}catch(e){}stopSpeech();ttsStatus.textContent="";document.getElementById("slowerButton").disabled=rateIndex===0;document.getElementById("fasterButton").disabled=rateIndex===rates.length-1;}
 document.getElementById("slowerButton").addEventListener("click",()=>setRate(-1));
