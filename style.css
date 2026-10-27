@@ -16,3 +16,15 @@
 .set-picker{flex:1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.set-picker .level-button{min-width:0;padding:9px 0;font-size:.9rem}.set-picker .level-button.active{background:var(--pink)}
 
 .speech-line{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.15)}.speech-line:last-child{border-bottom:0}.line-play{flex:0 0 38px;width:38px;height:38px;border:2px solid var(--ink);border-radius:12px;background:white;color:var(--ink);font-size:1rem;font-weight:900;cursor:pointer}.speech-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}.speed-controls{display:flex;align-items:center;gap:7px;font-size:.9rem;font-weight:850}.small-speech-button{background:#fff;border:2px solid var(--ink);border-radius:12px;padding:8px 11px;font-size:.95rem;font-weight:900;color:var(--ink);cursor:pointer}.speed-controls .small-speech-button{font-size:1.2rem;min-width:36px;padding:5px 8px}
+
+/* Icelandic flashcard-inspired audio controls */
+.answer-card .speech-line{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:2px solid rgba(22,22,22,.13);font-size:clamp(1.45rem,6vw,2rem);font-weight:850}
+.answer-card .speech-line span{flex:1;min-width:0}
+.answer-card .line-play{appearance:none;-webkit-appearance:none;display:grid;place-items:center;flex:0 0 46px;width:46px;height:44px;padding:0;background:#ead9f6;border:3px solid #1b2831;border-radius:14px;box-shadow:4px 4px 0 #1b2831;color:#1b2831;font-size:1.05rem;font-weight:950;line-height:1}
+.answer-card .speech-controls{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;margin:22px 0 6px}
+.answer-card .small-speech-button{appearance:none;-webkit-appearance:none;display:grid;place-items:center;border:3px solid #1b2831;border-radius:14px;background:#fff;box-shadow:4px 4px 0 #1b2831;color:#1b2831;font-size:1.1rem;font-weight:900;min-height:46px;padding:7px 12px}
+.answer-card #pronounceButton{background:#ead9f6;min-width:125px}
+.answer-card .speed-controls{display:flex;align-items:center;gap:9px;font-weight:900;font-size:1.05rem}
+.answer-card .speed-controls .small-speech-button{min-width:42px;min-height:42px;padding:3px 8px;font-size:1.5rem}
+.answer-card .line-play:active,.answer-card .small-speech-button:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #1b2831}
+.answer-card #ttsStatus{min-height:1.1em;text-align:center;margin:10px 0 0;color:#45535b}
