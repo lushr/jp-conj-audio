@@ -78,12 +78,10 @@ function speakLine(line,token,onDone){
 }
 function renderAnswer(card){
  answerEl.replaceChildren();
- for(const line of card.japanese.split("\n").filter(Boolean)){
+ for(const line of card.japanese.split("\\n").filter(Boolean)){
   const row=document.createElement("div");row.className="speech-line";
   const label=document.createElement("span");label.textContent=line;
-  const play=document.createElement("button");play.type="button";play.className="line-play";play.textContent="▶";play.setAttribute("aria-label","Pronounce "+line);
-  play.addEventListener("click",()=>{stopSpeech();const token=sequence;ttsStatus.textContent="Playing "+line;speakLine(line,token,()=>{ttsStatus.textContent="";});});
-  row.append(label,play);answerEl.append(row);
+  row.append(label);answerEl.append(row);
  }
 }
 pronounceButton.addEventListener("click",()=>{
