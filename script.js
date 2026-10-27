@@ -4,28 +4,22 @@ const SIZE=30;
 function shuffle(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function word(c){return c.english.split(" — ")[0]}
 function makeSets(cards){
- const kuru=cards.find(c=>word(c)==="くる");
- if(!kuru)throw Error("Missing くる");
- const others=cards.filter(c=>c!==kuru);
- const count=Math.ceil(others.length/(SIZE-1));
+ // Both きる verbs (to wear and to cut) are practised in every set.
+ const recurring=cards.filter(c=>word(c)==="きる");
+ if(recurring.length!==2)throw Error("Missing きる verbs");
+ const others=cards.filter(c=>!recurring.includes(c)&&word(c)!=="おくる");
+ const count=6;
  const groups=Array.from({length:count},()=>[]);
- // Spread verbs and both adjective types throughout every set.
+ // Balance each grammatical category without repeating other words.
  for(const type of ["verb","i-adj","na-adj"]){
    const candidates=shuffle(others.filter(c=>c.type===type));
-   candidates.forEach((card,i)=>groups[i%count].push(card));
+   candidates.forEach((card,i)=>{
+     const smallest=Math.min(...groups.map(g=>g.length));
+     const choices=groups.map((g,j)=>j).filter(j=>groups[j].length===smallest);
+     groups[choices[i%choices.length]].push(card);
+   });
  }
- const tricky=["いい","かっこいい","たかい","つまらない","なる","つく","おくる"];
- const extras=shuffle(others.filter(c=>tricky.includes(word(c))));
- return groups.map((group,i)=>{
-   const deck=[...group];
-   let offset=i;
-   while(deck.length<SIZE-1){
-     const options=extras.filter(c=>!deck.includes(c));
-     if(!options.length)break;
-     deck.push(options[offset%options.length]);offset++;
-   }
-   return shuffle([kuru,...deck]);
- });
+ return groups.map(group=>shuffle([...recurring,...group]));
 }
 function showCard(){
  stopSpeech();
@@ -90,7 +84,7 @@ pronounceButton.addEventListener("click",()=>{
  const card=sets[currentSet]?.[currentIndex];if(!card)return;
  if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis unavailable.";return;}
  stopSpeech();const token=sequence;
- const phrase=card.japanese.split("\\n").filter(Boolean).join("。 ")+"。";
+ const lines=card.japanese.split("\\n").filter(Boolean);\n let position=0;\n const playNext=()=>{if(token!==sequence)return;if(position>=lines.length){ttsStatus.textContent="";return;}speakLine(lines[position++]+"。",token,()=>{pauseTimer=setTimeout(()=>{pauseTimer=null;playNext();},650);});};\n ttsStatus.textContent="";playNext();\n return;
  ttsStatus.textContent="";
  speakLine(phrase,token,()=>{ttsStatus.textContent="";});
 });
