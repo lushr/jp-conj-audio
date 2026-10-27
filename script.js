@@ -65,7 +65,7 @@ if("serviceWorker"in navigator){
 const pronounceButton=document.getElementById("pronounceButton");
 const ttsStatus=document.getElementById("ttsStatus");
 const speechSpeed=document.getElementById("speechSpeed");
-let rate=0.85,sequence=0,pauseTimer=null;
+const rates=[0.75,0.85,1.0];let rateIndex=1,rate=rates[rateIndex],sequence=0,pauseTimer=null;
 function stopSpeech(){sequence++;if(pauseTimer!==null){clearTimeout(pauseTimer);pauseTimer=null;}if("speechSynthesis" in window)speechSynthesis.cancel();}
 function japaneseVoice(){const voices=speechSynthesis.getVoices();return voices.find(v=>v.lang.toLowerCase()==="ja-jp")||voices.find(v=>v.lang.toLowerCase().startsWith("ja"));}
 function speakLine(line,token,onDone){
@@ -92,6 +92,6 @@ pronounceButton.addEventListener("click",()=>{
  ttsStatus.textContent="";
  speakLine(phrase,token,()=>{ttsStatus.textContent="";});
 });
-function setRate(delta){rate=Math.max(0.5,Math.min(1.3,Math.round((rate+delta)*100)/100));speechSpeed.textContent=rate.toFixed(2)+"×";stopSpeech();ttsStatus.textContent="";}
-document.getElementById("slowerButton").addEventListener("click",()=>setRate(-0.1));
-document.getElementById("fasterButton").addEventListener("click",()=>setRate(0.1));
+function setRate(delta){rateIndex=Math.max(0,Math.min(rates.length-1,rateIndex+delta));rate=rates[rateIndex];speechSpeed.textContent=(rate===1?"1":rate.toFixed(2))+"×";stopSpeech();ttsStatus.textContent="";document.getElementById("slowerButton").disabled=rateIndex===0;document.getElementById("fasterButton").disabled=rateIndex===rates.length-1;}
+document.getElementById("slowerButton").addEventListener("click",()=>setRate(-1));
+document.getElementById("fasterButton").addEventListener("click",()=>setRate(1));
