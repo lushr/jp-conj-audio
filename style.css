@@ -44,3 +44,7 @@
 .answer-card #ttsStatus{min-height:0;margin:2px 0 0}
 
 .answer-card .voice-picker{display:flex;align-items:center;gap:8px;margin:12px 0;font-size:.9rem;font-weight:800}.answer-card .voice-picker label{flex-shrink:0}.answer-card #voiceSelect{min-width:0;flex:1;padding:8px;border:2px solid #1b2831;border-radius:10px;background:white;color:#1b2831;font-size:16px}
+
+/* Minimal audio controls: no divider, grey out unavailable speed changes. */
+.answer-card .speech-line:last-child{border-bottom:0}
+.answer-card .speech-control-row .small-speech-button:disabled{background:#d6d6d6;color:#858585;border-color:#a5a5a5;box-shadow:3px 3px 0 #a5a5a5;opacity:.7;cursor:default}
