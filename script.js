@@ -74,7 +74,7 @@ function speakLine(line,token,onDone){
 }
 function renderAnswer(card){
  answerEl.replaceChildren();
- for(const line of card.japanese.split("\\n").filter(Boolean)){
+ for(const line of card.japanese.split("\n").filter(Boolean)){
   const row=document.createElement("div");row.className="speech-line";
   const label=document.createElement("span");label.textContent=line;
   row.append(label);answerEl.append(row);
@@ -84,7 +84,7 @@ pronounceButton.addEventListener("click",()=>{
  const card=sets[currentSet]?.[currentIndex];if(!card)return;
  if(!("speechSynthesis" in window)){ttsStatus.textContent="Speech synthesis unavailable.";return;}
  stopSpeech();const token=sequence;
- const lines=card.japanese.split("\\n").filter(Boolean);
+ const lines=card.japanese.split("\n").filter(Boolean);
  let position=0;
  ttsStatus.textContent="";
  const playNext=()=>{
