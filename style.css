@@ -35,3 +35,10 @@
 .answer-card .speech-control-row{display:flex;align-items:center;justify-content:center;gap:14px}
 .answer-card .speech-control-row .small-speech-button{display:grid;place-items:center;min-width:48px;width:48px;height:52px;min-height:0;padding:0;background:#fff;border:3px solid #1b2831;border-radius:14px;box-shadow:5px 5px 0 #1b2831;font-size:1.65rem;font-weight:900;color:#1b2831}
 .answer-card .speech-control-row #pronounceButton{width:110px;height:78px;min-width:110px;background:#ead9f6;border-radius:20px;font-size:2rem}
+
+/* Compact playback control: half-size centre button */
+.answer-card .speech-control-row #pronounceButton{width:55px;height:39px;min-width:55px;min-height:39px;border-radius:12px;font-size:1.25rem;box-shadow:3px 3px 0 #1b2831}
+.answer-card .speech-control-row .small-speech-button{width:42px;height:39px;min-width:42px;min-height:39px;font-size:1.3rem;box-shadow:3px 3px 0 #1b2831}
+.answer-card .speech-control-row{gap:12px}
+.answer-card .speech-controls{gap:5px;margin:12px auto 2px}
+.answer-card #ttsStatus{min-height:0;margin:2px 0 0}
