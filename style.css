@@ -28,3 +28,10 @@
 .answer-card .speed-controls .small-speech-button{min-width:42px;min-height:42px;padding:3px 8px;font-size:1.5rem}
 .answer-card .line-play:active,.answer-card .small-speech-button:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #1b2831}
 .answer-card #ttsStatus{min-height:1.1em;text-align:center;margin:10px 0 0;color:#45535b}
+
+/* Icelandic-style central playback cluster */
+.answer-card .speech-controls{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;margin:20px auto 8px}
+.answer-card #speechSpeed{font-size:1.2rem;font-weight:900;color:#315368;line-height:1.2}
+.answer-card .speech-control-row{display:flex;align-items:center;justify-content:center;gap:14px}
+.answer-card .speech-control-row .small-speech-button{display:grid;place-items:center;min-width:48px;width:48px;height:52px;min-height:0;padding:0;background:#fff;border:3px solid #1b2831;border-radius:14px;box-shadow:5px 5px 0 #1b2831;font-size:1.65rem;font-weight:900;color:#1b2831}
+.answer-card .speech-control-row #pronounceButton{width:110px;height:78px;min-width:110px;background:#ead9f6;border-radius:20px;font-size:2rem}
