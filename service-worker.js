@@ -1,5 +1,5 @@
 // Network-first: always try the latest published app, even when installed on the home screen.
-const CACHE_NAME="jp-conjugation-v3";
+const CACHE_NAME="jp-conj-audio-v5";
 const APP_FILES=["./","./index.html","./style.css","./script.js","./conjugations.json","./manifest.json","./icon.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_FILES)).then(()=>self.skipWaiting()));
