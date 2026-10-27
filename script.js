@@ -64,7 +64,10 @@ if("serviceWorker"in navigator){
 // Native Japanese TTS: individual line playback or a paced sequence.
 const pronounceButton=document.getElementById("pronounceButton");
 const ttsStatus=document.getElementById("ttsStatus");
-const rates=[0.65,0.75,0.85];let rateIndex=1,rate=rates[rateIndex],sequence=0,pauseTimer=null;
+const rates=[0.65,0.75,0.85];
+let savedRate=null;
+try{savedRate=Number(localStorage.getItem("jp-conj-audio-speed"));}catch(e){}
+let rateIndex=rates.includes(savedRate)?rates.indexOf(savedRate):1,rate=rates[rateIndex],sequence=0,pauseTimer=null;
 function stopSpeech(){sequence++;if(pauseTimer!==null){clearTimeout(pauseTimer);pauseTimer=null;}if("speechSynthesis" in window)speechSynthesis.cancel();}
 function japaneseVoice(){return speechSynthesis.getVoices().find(v=>v.lang.startsWith("ja"));}
 function speakLine(line,token,onDone){
@@ -91,6 +94,10 @@ pronounceButton.addEventListener("click",()=>{
  ttsStatus.textContent="";
  speakLine(phrase,token,()=>{ttsStatus.textContent="";});
 });
-function setRate(delta){rateIndex=Math.max(0,Math.min(rates.length-1,rateIndex+delta));rate=rates[rateIndex];stopSpeech();ttsStatus.textContent="";document.getElementById("slowerButton").disabled=rateIndex===0;document.getElementById("fasterButton").disabled=rateIndex===rates.length-1;}
+function setRate(delta){rateIndex=Math.max(0,Math.min(rates.length-1,rateIndex+delta));rate=rates[rateIndex];try{localStorage.setItem("jp-conj-audio-speed",String(rate));}catch(e){}stopSpeech();ttsStatus.textContent="";document.getElementById("slowerButton").disabled=rateIndex===0;document.getElementById("fasterButton").disabled=rateIndex===rates.length-1;}
 document.getElementById("slowerButton").addEventListener("click",()=>setRate(-1));
 document.getElementById("fasterButton").addEventListener("click",()=>setRate(1));
+
+// Restore the speed buttons to the saved setting on launch.
+document.getElementById("slowerButton").disabled=rateIndex===0;
+document.getElementById("fasterButton").disabled=rateIndex===rates.length-1;
