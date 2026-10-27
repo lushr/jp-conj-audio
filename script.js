@@ -65,7 +65,7 @@ if("serviceWorker"in navigator){
 const pronounceButton=document.getElementById("pronounceButton");
 const ttsStatus=document.getElementById("ttsStatus");
 const speechSpeed=document.getElementById("speechSpeed");
-const rates=[0.75,0.85,1.0];let rateIndex=1,rate=rates[rateIndex],sequence=0,pauseTimer=null;
+const rates=[0.65,0.75,0.85];let rateIndex=1,rate=rates[rateIndex],sequence=0,pauseTimer=null;
 function stopSpeech(){sequence++;if(pauseTimer!==null){clearTimeout(pauseTimer);pauseTimer=null;}if("speechSynthesis" in window)speechSynthesis.cancel();}
 function japaneseVoice(){return speechSynthesis.getVoices().find(v=>v.lang.startsWith("ja"));}
 function speakLine(line,token,onDone){
