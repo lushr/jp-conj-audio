@@ -17,13 +17,34 @@ a.card:active{transform:translate(3px,3px);box-shadow:3px 3px 0 #161616}
 .name{display:block;font-size:1.25rem;font-weight:950;margin-bottom:6px}
 .desc{display:block;font-size:.95rem;line-height:1.4;font-weight:550}
 .foot{margin-top:24px;text-align:center;font-size:.86rem;font-weight:650}
-.share{margin-top:65px;text-align:center;background:#fffaf0;border:4px solid #161616;border-radius:24px;padding:22px 18px;box-shadow:6px 6px 0 #161616}
-.share h2{font-size:1.45rem;margin:0 0 8px;font-weight:950}.share p{font-weight:650;margin-bottom:15px}
-.share img{display:block;width:min(100%,250px);height:auto;aspect-ratio:1;margin:0 auto 12px;border:8px solid white;border-radius:8px}
-.share a{color:#161616;font-weight:800;overflow-wrap:anywhere}
+.share{margin-top:65px;text-align:center}
+.share-toggle{display:block;width:100%;padding:22px 18px;background:#fffaf0;color:#161616;border:4px solid #161616;border-radius:24px;box-shadow:6px 6px 0 #161616;font:950 1.45rem system-ui,-apple-system,sans-serif;cursor:pointer}
+.share-toggle:active{transform:translate(3px,3px);box-shadow:3px 3px 0 #161616}
+.share-toggle:focus-visible,.qr-close:focus-visible{outline:3px solid #6747ad;outline-offset:5px}
+.qr-overlay[hidden]{display:none}
+.qr-overlay{position:fixed;inset:0;z-index:100;background:#fffaf0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;text-align:center}
+.qr-overlay h2{font-size:clamp(1.4rem,6vw,2rem);margin:0;font-weight:950}
+.qr-overlay img{display:block;width:min(88vw,75dvh,600px);max-height:75dvh;aspect-ratio:1;object-fit:contain;background:white}
+.qr-overlay a{color:#161616;font-weight:800;overflow-wrap:anywhere}
+.qr-close{position:absolute;top:max(16px,env(safe-area-inset-top));right:16px;background:#cdefff;border:3px solid #161616;border-radius:14px;padding:8px 13px;font:900 1.2rem system-ui;cursor:pointer}
+body.qr-open{overflow:hidden}
 </style></head><body><main class="shell"><header><h1>日本語 drills</h1><p class="sub">Choose what you'd like to practice.</p></header>
 <nav aria-label="Practice activities">
 <a class="card" href="https://lushr.github.io/JP-renshou/"><span class="name">〜てsentences</span><span class="desc">Fun sentences to try!</span></a>
 <a class="card" href="https://lushr.github.io/JP-conjugation/"><span class="name">Short form drills</span><span class="desc">〜ない · 〜た · 〜なかった · 〜て · 〜んです</span></a>
 <a class="card audio" href="practice.html"><span class="name">Short form drills with audio</span><span class="desc">〜ない · 〜た · 〜なかった · 〜て · 〜んです, with Japanese text-to-speech (TTS) from your device. You may need to download a Japanese voice.</span></a>
-</nav><section class="share" aria-labelledby="share-heading"><h2 id="share-heading">Share with a friend!</h2><p>Scan to open 日本語 drills.</p><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&amp;margin=12&amp;data=https%3A%2F%2Flushr.github.io%2Fjp-conj-audio%2F" alt="QR code linking to the Japanese drills main menu" width="300" height="300" loading="lazy"><a href="https://lushr.github.io/jp-conj-audio/">lushr.github.io/jp-conj-audio/</a></section><p class="foot">More practice activities coming later.</p></main></body></html>
+</nav><section class="share"><button class="share-toggle" id="shareToggle" type="button" aria-haspopup="dialog">Share with friends</button></section>
+<div class="qr-overlay" id="qrOverlay" role="dialog" aria-modal="true" aria-labelledby="qrHeading" hidden>
+<button class="qr-close" id="qrClose" type="button" aria-label="Close QR code">✕</button>
+<h2 id="qrHeading">Scan to open 日本語 drills</h2>
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=800x800&amp;margin=16&amp;data=https%3A%2F%2Flushr.github.io%2Fjp-conj-audio%2F" alt="QR code for the Japanese drills homepage" width="800" height="800">
+<a href="https://lushr.github.io/jp-conj-audio/">lushr.github.io/jp-conj-audio/</a>
+</div>
+<p class="foot">More practice activities coming later.</p></main><script>
+const shareToggle=document.getElementById('shareToggle'),qrOverlay=document.getElementById('qrOverlay'),qrClose=document.getElementById('qrClose');
+function showQR(){qrOverlay.hidden=false;document.body.classList.add('qr-open');qrClose.focus()}
+function hideQR(){qrOverlay.hidden=true;document.body.classList.remove('qr-open');shareToggle.focus()}
+shareToggle.addEventListener('click',showQR);qrClose.addEventListener('click',hideQR);
+qrOverlay.addEventListener('click',e=>{if(e.target===qrOverlay)hideQR()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!qrOverlay.hidden)hideQR();if(e.key==='Tab'&&!qrOverlay.hidden){const focusables=[qrClose,qrOverlay.querySelector('a')];const i=focusables.indexOf(document.activeElement);if(e.shiftKey&&i===0){e.preventDefault();focusables[1].focus()}else if(!e.shiftKey&&i===1){e.preventDefault();focusables[0].focus()}}});
+</script></body></html>
