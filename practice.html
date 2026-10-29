@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8c8dc"><title>Japanese Conjugation Practice</title>
-<link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css?v=controls3">
+<link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css?v=menu2">
 <style>
 .help-sheet h4{margin:18px 0 6px;font-size:1.05rem}
 .help-sheet .example{margin:8px 0 14px 14px;padding:9px 12px;background:rgba(205,239,255,.62);border-radius:12px}
@@ -18,13 +18,16 @@
 #uverb .ua-table td:nth-child(2),#uverb .ua-table th:nth-child(2){width:70%}
 #uverb .sound-table td:first-child,#uverb .sound-table th:first-child{width:55%}
 #uverb .sound-table td:nth-child(2),#uverb .sound-table th:nth-child(2){width:45%}
+
+/* Compact, matching dropdown navigation */
+.menu-anchor{position:relative;flex:0 0 auto;z-index:8}.menu-toggle{display:grid;place-items:center;width:48px;height:48px;padding:0;border:3px solid #161616;border-radius:16px;background:#cdefff;color:#161616;box-shadow:4px 4px 0 #161616;font-size:1.6rem;font-weight:900;line-height:1;cursor:pointer}.menu-toggle:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #161616}.menu-popover{position:absolute;top:calc(100% + 12px);left:0;width:max-content;min-width:178px;max-width:calc(100vw - 36px);padding:7px;background:#cdefff;border:4px solid #161616;border-radius:18px;box-shadow:5px 5px 0 #161616;z-index:20}.menu-popover[hidden]{display:none!important}.menu-popover a,.menu-popover button{display:block;width:100%;border:0;background:transparent;color:#161616;text-align:left;text-decoration:none;font:800 1rem system-ui,-apple-system,sans-serif;padding:12px;border-radius:10px;cursor:pointer}.menu-popover a:focus-visible,.menu-popover button:focus-visible,.menu-toggle:focus-visible{outline:3px solid #7441a4;outline-offset:2px}.menu-popover a:hover,.menu-popover button:hover{background:rgba(255,255,255,.65)}
 </style>
 </head><body>
 <main class="app-shell">
 <section class="top-card">
-<div class="app-title-row">
-<a href="index.html" aria-label="Return to main menu" title="Main menu" style="display:inline-flex;align-items:center;justify-content:center;padding:0 10px;min-height:42px;border-radius:12px;background:#fff;color:#252039;text-decoration:none;font-weight:800;font-size:.85rem">⌂ Menu</a>
-<button id="helpButton" class="icon-button" type="button" aria-label="Help">?</button>
+<div class="app-title-row"><div class="menu-anchor"><button id="menuToggle" class="menu-toggle" type="button" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" aria-controls="menuPopover">☰</button><nav id="menuPopover" class="menu-popover" aria-label="Practice menu" hidden><a href="index.html">⌂ Main menu</a><button type="button" id="menuHelp">? Help</button></nav></div>
+
+<button style="display:none" id="helpButton" class="icon-button" type="button" aria-label="Help">?</button>
 <div class="set-picker" id="setPicker" aria-label="Choose practice set"></div></div>
 <div class="progress-wrap"><div class="progress-label"><span id="modeLabel">Set 1 of 7</span><span id="progressText">0/0</span></div>
 <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div></div>
@@ -231,4 +234,4 @@
 <h4>ある — to exist</h4><p>The negative is irregular.</p>
 <div class="table-wrap"><table><tr><td>ない</td><td><b>ない</b></td></tr><tr><td>た</td><td>あった</td></tr><tr><td>なかった</td><td><b>なかった</b></td></tr><tr><td>て</td><td>あって</td></tr><tr><td>たり</td><td>あったり</td></tr></table></div>
 </section>
-</div></div><script src="script.js?v=remember1"></script></body></html>
+</div></div><script src="script.js?v=remember1"></script><script>(function(){const b=document.getElementById('menuToggle'),p=document.getElementById('menuPopover');if(!b||!p)return;function close(){p.hidden=true;b.setAttribute('aria-expanded','false')}b.addEventListener('click',()=>{const open=p.hidden;p.hidden=!open;b.setAttribute('aria-expanded',String(open))});document.addEventListener('pointerdown',e=>{if(!b.parentElement.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});const h=document.getElementById('menuHelp');if(h)h.addEventListener('click',()=>{close();document.getElementById('helpButton')?.click()})})();</script></body></html>
