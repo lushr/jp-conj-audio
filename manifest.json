@@ -1,6 +1,6 @@
 {
-  "name": "Japanese Conjugation Practice",
-  "short_name": "Conjugation",
+  "name": "JP drills",
+  "short_name": "JP drills",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#fffaf0",
